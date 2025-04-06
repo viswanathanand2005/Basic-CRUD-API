@@ -20,6 +20,25 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+// Create
+app.post("/api/products", async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+//Read
+app.get("/api/view", async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.status(200).json(products);
+  } catch (error) {
+    res.send(500).json({ message: error.message });
+  }
+});
+
 app.get("/api/view/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -30,19 +49,13 @@ app.get("/api/view/:id", async (req, res) => {
   }
 });
 
-app.get("/api/view", async (req, res) => {
-  try {
-    const products = await Product.find({});
-    res.status(200).json(products);
-  } catch (error) {
-    res.send(500).json({ message: error.message });
-  }
-});
-
+//Update
 app.put("/api/update/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(id, req.body,{new: true}); // Automatically return the updated document if it exists.
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+      new: true,
+    }); // Automatically return the updated document if it exists.
 
     if (!updatedProduct) {
       return res.status(404).json({ message: "Product not found" });
@@ -54,10 +67,14 @@ app.put("/api/update/:id", async (req, res) => {
   }
 });
 
-app.post("/api/products", async (req, res) => {
+//Delete
+app.delete("/api/delete/:id", async (req, res) => {
   try {
-    const product = await Product.create(req.body);
-    res.status(200).json(product);
+    const {id} = req.params
+    const product = await Product.findByIdAndDelete(id);
+    if(!product){
+      res.status(404).json({message: 'Product does not exist'})
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
