@@ -70,11 +70,12 @@ app.put("/api/update/:id", async (req, res) => {
 //Delete
 app.delete("/api/delete/:id", async (req, res) => {
   try {
-    const {id} = req.params
+    const id = req.params.id.trim(); // Trim any whitespace or newline
     const product = await Product.findByIdAndDelete(id);
-    if(!product){
-      res.status(404).json({message: 'Product does not exist'})
+    if (!product) {
+      return res.status(404).json({ message: "Product does not exist" });
     }
+    res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
