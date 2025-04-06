@@ -5,6 +5,8 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(express.urlencoded({extended: false})) //Allows form url to insert documents
+
 mongoose
   .connect(
     "mongodb+srv://chviswanath2:m37KTZ9gMpOI0KJr@api-create.4dkwv7f.mongodb.net/?retryWrites=true&w=majority&appName=API-Create"
@@ -70,7 +72,7 @@ app.put("/api/update/:id", async (req, res) => {
 //Delete
 app.delete("/api/delete/:id", async (req, res) => {
   try {
-    const id = req.params.id.trim(); // Trim any whitespace or newline
+    const { id } = req.params;
     const product = await Product.findByIdAndDelete(id);
     if (!product) {
       return res.status(404).json({ message: "Product does not exist" });
