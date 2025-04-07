@@ -15,7 +15,7 @@ mongoose
     console.log("Connected successfully");
   })
   .catch(() => {
-    console.log("Connection successfully");
+    console.log("Connection failed");
   });
 
 app.get("/", (req, res) => {
