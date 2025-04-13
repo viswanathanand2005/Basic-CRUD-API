@@ -5,7 +5,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false})) //Allows form url to insert documents
+app.use(express.urlencoded({ extended: false })); //Allows form url to insert documents
 
 mongoose
   .connect(
@@ -15,7 +15,7 @@ mongoose
     console.log("Connected successfully");
   })
   .catch(() => {
-    console.log("Connection successfully");
+    console.log("Connection Failed");
   });
 
 app.get("/", (req, res) => {
